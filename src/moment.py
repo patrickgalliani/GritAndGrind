@@ -2,7 +2,7 @@
 # Grit and Grind
 # 6/23/18
 
-from location import LocationMatrix
+from location import MomentLocations
 
 from datetime import datetime
 
@@ -15,4 +15,4 @@ class Moment:
         )
         self.seconds_left_quarter = moment_array[2]
         self.seconds_left_shot_clock = moment_array[3]
-        self.location_matrix = moment_array_array[4]
+        self.locations = MomentLocations(moment_array[5])
