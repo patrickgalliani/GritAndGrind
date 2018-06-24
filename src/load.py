@@ -13,30 +13,33 @@ import json
 
 def load_game(game_path, logger):
     '''
+    Loads a game from a specified JSON path and returns a Game object.
     '''
     with open(game_path, 'r') as g:
         logger.info("Reading the raw SportVU data into memory from {}...".format(game_path))
         d = json.loads(g.read())
 
         logger.info("Reading in the player and team data...")
-        visitor_players = [
+        visitor_players = list(set([
             Player(
                 x['firstname'], 
                 x['lastname'],
                 x['jersey'],
                 x['playerid'],
                 x['position']
-            ) for x in d['events'][0]['visitor']['players']
-        ]
-        home_players = [
+            ) for y in d['events']
+            for x in y['visitor']['players']
+        ]))
+        home_players = list(set([
             Player(
                 x['firstname'],
                 x['lastname'],
                 x['jersey'],
                 x['playerid'],
                 x['position']
-            ) for x in d['events'][0]['home']['players']
-        ]
+            ) for y in d['events']
+            for x in y['home']['players']
+        ]))
         visitor_team = Team(
             d['events'][0]['visitor']['name'],
             d['events'][0]['visitor']['teamid'],
@@ -49,10 +52,10 @@ def load_game(game_path, logger):
             d['events'][0]['home']['abbreviation'],
             home_players
         )
-        
         logger.info("Reading in the location data...")
         moments = []
-        for moment_array in d['events'][0]['moments']:
-            moments.append(Moment(moment_array))
+        for event in d['events']:
+            for moment_array in event['moments']:
+                moments.append(Moment(moment_array, event['eventId']))
         return Game(d['gamedate'], d['gameid'], home_team, visitor_team, moments)         
 
