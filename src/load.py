@@ -16,25 +16,29 @@ def load_game(game_path, logger):
     '''
     with open(game_path, 'r') as g:
         logger.info(
-            "Reading the raw SportVU data from {}...".format(game_path)
+            "Reading in the raw SportVU data from {}...".format(game_path)
         )
         d = json.loads(g.read())
 
         logger.info("Reading in the player and team data...")
+        visitor_team_name = d['events'][0]['visitor']['name']
         visitor_players = list(set([
             Player(
                 x['firstname'],
                 x['lastname'],
+                visitor_team_name,
                 x['jersey'],
                 x['playerid'],
                 x['position']
             ) for y in d['events']
             for x in y['visitor']['players']
         ]))
+        home_team_name = d['events'][0]['home']['name']
         home_players = list(set([
             Player(
                 x['firstname'],
                 x['lastname'],
+                home_team_name,
                 x['jersey'],
                 x['playerid'],
                 x['position']
@@ -42,13 +46,13 @@ def load_game(game_path, logger):
             for x in y['home']['players']
         ]))
         visitor_team = Team(
-            d['events'][0]['visitor']['name'],
+            visitor_team_name,
             d['events'][0]['visitor']['teamid'],
             d['events'][0]['visitor']['abbreviation'],
             visitor_players
         )
         home_team = Team(
-            d['events'][0]['home']['name'],
+            home_team_name,
             d['events'][0]['home']['teamid'],
             d['events'][0]['home']['abbreviation'],
             home_players
