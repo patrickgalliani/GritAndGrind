@@ -2,6 +2,7 @@
 # Grit and Grind
 # 6/23/18
 
+
 class Team:
 
     def __init__(self, team_name, team_id, abbreviation, players):

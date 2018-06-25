@@ -2,6 +2,7 @@
 # Grit and Grind
 # 6/23/18
 
+
 class Player:
 
     def __init__(self, first_name, last_name, jersey, player_id, position):

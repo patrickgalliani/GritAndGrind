@@ -4,6 +4,7 @@
 
 import logging
 
+
 def get_logger(program_name):
     # create logger
     logger = logging.getLogger(program_name)

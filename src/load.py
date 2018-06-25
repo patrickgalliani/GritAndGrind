@@ -7,22 +7,23 @@ from moment import Moment
 from player import Player
 from team import Team
 
-from datetime import datetime
-
 import json
+
 
 def load_game(game_path, logger):
     '''
     Loads a game from a specified JSON path and returns a Game object.
     '''
     with open(game_path, 'r') as g:
-        logger.info("Reading the raw SportVU data into memory from {}...".format(game_path))
+        logger.info(
+            "Reading the raw SportVU data from {}...".format(game_path)
+        )
         d = json.loads(g.read())
 
         logger.info("Reading in the player and team data...")
         visitor_players = list(set([
             Player(
-                x['firstname'], 
+                x['firstname'],
                 x['lastname'],
                 x['jersey'],
                 x['playerid'],
@@ -57,5 +58,10 @@ def load_game(game_path, logger):
         for event in d['events']:
             for moment_array in event['moments']:
                 moments.append(Moment(moment_array, event['eventId']))
-        return Game(d['gamedate'], d['gameid'], home_team, visitor_team, moments)         
-
+        return Game(
+            d['gamedate'],
+            d['gameid'],
+            home_team,
+            visitor_team,
+            moments
+        )
