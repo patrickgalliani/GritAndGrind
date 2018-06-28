@@ -15,17 +15,6 @@ import numpy as np
 import pandas as pd
 import pickle
 
-BUNNY = 0
-MIDRANGE = 1
-HEAVE = 2
-
-def shot_type(row):
-    if row['SHOT_DIST'] < 3:
-        return BUNNY
-    elif row['SHOT_DIST'] > 17:
-        return HEAVE
-    else:
-        return MIDRANGE
 
 if __name__ == '__main__':
     
@@ -43,25 +32,13 @@ if __name__ == '__main__':
         'SHOT_CLOCK',
         'PTS_TYPE',
         'SHOT_DIST',
+        'TOUCH_TIME',
         'CLOSE_DEF_DIST',
         'SHOT_RESULT'
     ]]
 
     # Deal with null entries for shot clock
     shots['SHOT_CLOCK'] = shots['SHOT_CLOCK'].fillna(0)
-
-    # Classify shots based on distance
-    shots['IS_BUNNY'] = (
-        shots['SHOT_DIST'].apply(lambda x: 1 if x < 4 else 0)
-    )
-    shots['IS_MIDRANGE'] = (
-        shots['SHOT_DIST'].apply(lambda x: (
-            1 if (x >= 4 and x <= 17) else 0)
-        )
-    )
-    shots['IS_HEAVE'] = (
-        shots['SHOT_DIST'].apply(lambda x: 1 if x > 17 else 0)
-    )
     
     # Convert 'made'/'missed' labels to binary values
     shots['RESULT'] = (
@@ -71,14 +48,14 @@ if __name__ == '__main__':
     )
 
     # Select final feature set
-    X = shots[[
+    params = [
         'SHOT_CLOCK',
         'PTS_TYPE',
-        'IS_BUNNY',
-        'IS_MIDRANGE',
-        'IS_HEAVE',
+        'SHOT_DIST',
+        'TOUCH_TIME',
         'CLOSE_DEF_DIST',
-    ]]
+    ]
+    X = shots[params]
     y = shots[['RESULT']]
 
     # Split training examples from labels
@@ -106,7 +83,11 @@ if __name__ == '__main__':
     lr = LinearRegression()
     lr.fit(X_train, y_train)
     lr_params = lr.coef_
-    logger.info("\nLinear Regressor Model Parameters\n{}\n".format(lr_params))
+    logger.info("\nLinear Regressor Model Parameters\n{}\n{}\n".format(
+            params,
+            lr_params
+        )
+    )
     joblib.dump(lr, 'lr.pkl')
     logger.info("Persisted the Linear Regression model to lr.pkl...")
     y_pred_lr = lr.predict(X_test)
