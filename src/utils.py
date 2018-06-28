@@ -2,7 +2,14 @@
 # Grit and Grind
 # 6/23/18
 
+from location import Location
+
 import logging
+import math
+
+BALL_SHOOTER_THRESHOLD = 0.25
+HOOP1 = Location(25.0, 5.2)
+HOOP2 = Location(25.0, 88.8)
 
 
 def get_logger(program_name):
@@ -21,3 +28,10 @@ def get_logger(program_name):
     # add ch to logger
     logger.addHandler(ch)
     return logger
+
+
+def get_distance(loc1, loc2):
+    '''
+    Returns the distance between loc1 and loc2.
+    '''
+    return math.sqrt((loc1.x - loc2.x) ** 2 + (loc1.y - loc2.y) ** 2)

@@ -30,7 +30,10 @@ def compute_player_distances(game, id_to_player, logger):
             player = id_to_player[player_id]
             cur_x, cur_y = player_locs[player_id].x, player_locs[player_id].y
             if player in dists:
-                prev_x, prev_y, prev_event_dist, prev_total_dist = dists[player]
+                (prev_x,
+                 prev_y,
+                 prev_event_dist,
+                 prev_total_dist) = dists[player]
                 if same_event:
                     diff_x = abs(cur_x - prev_x)
                     diff_y = abs(cur_y - prev_y)
@@ -94,4 +97,3 @@ if __name__ == '__main__':
 
     # Log player distances to console
     log_distances(player_distances, logger)
-

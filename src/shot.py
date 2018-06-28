@@ -9,4 +9,20 @@ class Shot:
         self.game_id = game_id
         self.player_id = player_id
         self.event_id = event_id
-        self.result = result # 1 for a make, 2 for a miss
+        self.result = result  # 1 for a make, 2 for a miss
+
+
+class ShotFeature(Shot):
+
+    def __init__(self,
+                 game_id,
+                 player_id,
+                 event_id,
+                 result,
+                 closest_defender_distance,
+                 shot_distance,
+                 shot_type):
+        Shot.__init__(self, game_id, player_id, event_id, result)
+        self.closest_defender_distance = closest_defender_distance
+        self.shot_distance = shot_distance
+        self.shot_type = shot_type

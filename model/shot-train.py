@@ -29,16 +29,11 @@ if __name__ == '__main__':
     # Select just the features we need
     logger.info('Preparing the training set...')
     shots = shots[[
-        'SHOT_CLOCK',
         'PTS_TYPE',
         'SHOT_DIST',
-        'TOUCH_TIME',
         'CLOSE_DEF_DIST',
         'SHOT_RESULT'
     ]]
-
-    # Deal with null entries for shot clock
-    shots['SHOT_CLOCK'] = shots['SHOT_CLOCK'].fillna(0)
     
     # Convert 'made'/'missed' labels to binary values
     shots['RESULT'] = (
@@ -49,10 +44,8 @@ if __name__ == '__main__':
 
     # Select final feature set
     params = [
-        'SHOT_CLOCK',
         'PTS_TYPE',
         'SHOT_DIST',
-        'TOUCH_TIME',
         'CLOSE_DEF_DIST',
     ]
     X = shots[params]
