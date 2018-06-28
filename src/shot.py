@@ -19,10 +19,14 @@ class ShotFeature(Shot):
                  player_id,
                  event_id,
                  result,
+                 x,
+                 y,
                  closest_defender_distance,
                  shot_distance,
                  shot_type):
         Shot.__init__(self, game_id, player_id, event_id, result)
+        self.x = x
+        self.y = y
         self.closest_defender_distance = closest_defender_distance
         self.shot_distance = shot_distance
         self.shot_type = shot_type

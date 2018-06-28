@@ -8,8 +8,8 @@ import logging
 import math
 
 BALL_SHOOTER_THRESHOLD = 0.25
-HOOP1 = Location(25.0, 5.2)
-HOOP2 = Location(25.0, 88.8)
+HOOP1 = Location(5.2, 25.0, 0.0)
+HOOP2 = Location(88.8, 25.0, 0.0)
 
 
 def get_logger(program_name):

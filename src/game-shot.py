@@ -27,18 +27,20 @@ def get_closest_defender_distance(home_players,
     '''
     assert(shooter in home_players or shooter in away_players)
     shooter_on_home = shooter in home_players
+    away_on = list(set(away_players).intersection(player_locations.keys()))
+    home_on = list(set(home_players).intersection(player_locations.keys()))
     if shooter_on_home:
         # Check distance between shooter and all away players and return min
         return min([
-                get_distance(player_locations[shooter], away_players[x])
-                for x in away_players
+                get_distance(player_locations[shooter], player_locations[x]) 
+                for x in away_on
             ]
         )
     else:  # Shooter is on the away team
         # Check distance between shooter and all home players and return min
         return min([
-                get_distance(player_locations[shooter], home_players[x])
-                for x in home_players
+                get_distance(player_locations[shooter], player_locations[x])
+                for x in home_on
             ]
         )
 
@@ -74,7 +76,7 @@ def get_shot_type(loc):
         return (
             min(get_distance(loc, HOOP1), get_distance(loc, HOOP2)) >= 23.75
         )
-    x, y = loc
+    x, y = loc.x, loc.y
     if is_corner_three(x, y) or is_regular_three(x, y):
         return 3
     else:
@@ -117,7 +119,7 @@ def get_shot_features_for_game(game, shots):
         # Find location of shooter last time he was less than threshold feet
         # away from the ball
         event_locs = locations[event]
-        for (loc, ball_loc, clst_def_dist, shot_dist) in event_locs[::-1]:
+        for (loc, ball_loc, clst_def_dist) in event_locs[::-1]:
             if loc is None or ball_loc is None:
                 continue
             if get_distance(loc, ball_loc) <= BALL_SHOOTER_THRESHOLD:
@@ -128,6 +130,8 @@ def get_shot_features_for_game(game, shots):
                     shots_map[event].player_id,
                     event,
                     shots_map[event].result,
+                    loc.x,
+                    loc.y,
                     clst_def_dist,
                     shot_dist,
                     shot_type
@@ -147,11 +151,42 @@ if __name__ == '__main__':
     # Read in the SportVU data
     game = load_game(game_path, logger)
 
+    home_players = [x.player_id for x in game.home_team.players]
+    away_players = [x.player_id for x in game.away_team.players]
+
     # Get Shot objects for each make and miss
     shots = load_shots(pbp_path, logger)
 
     # Compute locations for all makes and all misses
     shot_features = get_shot_features_for_game(game, shots)
+
+    # Log the shot features to the console
+    shot_attributes = ",".join([
+        'game_id',
+        'player_id',
+        'event_id',
+        'result',
+        'x',
+        'y',
+        'closest_defender_distance',
+        'shot_distance',
+        'shot_type'
+    ]) + "\n"
+    report = shot_attributes
+    for event, sf in shot_features.items()[:50]:
+        report += ("{},{},{},{},{},{},{},{},{}\n".format(
+                sf.game_id,
+                sf.player_id,
+                sf.event_id,
+                sf.result,
+                sf.x,
+                sf.y,
+                sf.closest_defender_distance,
+                sf.shot_distance,
+                sf.shot_type
+            )
+        )
+    logger.info("Shots\n\n{}".format(report))
 
     # Create a map between player_id and name
     id_to_player = dict(

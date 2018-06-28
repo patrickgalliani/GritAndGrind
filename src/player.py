@@ -19,5 +19,15 @@ class Player:
         self.player_id = player_id
         self.position = position
 
+    def __eq__(self, other):
+            return (
+                self.first_name == other.first_name and
+                self.last_name == other.last_name and
+                self.team_name == other.team_name and
+                self.jersey == other.jersey and
+                self.player_id == other.player_id and
+                self.position == other.position
+            )
+
     def __hash__(self):
         return hash(' '.join([self.first_name, self.last_name]))

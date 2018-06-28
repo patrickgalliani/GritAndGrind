@@ -5,10 +5,10 @@
 
 class Location:
 
-    def __init__(self, location_array):
-        self.x = location_array[2]
-        self.y = location_array[3]
-        self.z = location_array[4]
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
 
 
 def contains_ball_location(location_matrix):
@@ -41,7 +41,11 @@ class MomentLocations:
             location_matrix
         )
         if contains_ball_loc:
-            self.ball = Location(location_matrix[0])
+            self.ball = Location(
+                location_matrix[0][2], 
+                location_matrix[0][3],
+                location_matrix[0][4]
+        )
         else:
             self.ball = None
         self.players = dict([

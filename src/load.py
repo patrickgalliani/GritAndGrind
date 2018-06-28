@@ -77,13 +77,15 @@ def load_shots(pbp_path, logger):
     '''
     Loads play-by-play data from the given path and returns Shot objects.
     '''
+    logger.info("Reading in the play-by-play data...")
     pbp = pd.read_csv(pbp_path)[[
         "GAME_ID",
         "PLAYER1_ID",
         "EVENTNUM",
         "EVENTMSGTYPE",
     ]]
+    logger.info("Extracting shots from the play-by-play data...")
     return [
-        Shot(x[0], x[1], x[2], x[3]) for x in pbp.loc[
-            (pbp["EVENTMSGTYPE"] == 1 or pbp["EVENTMSGTYPE"] == 2)
-            ][["GAME_ID", "PLAYER1_ID", "EVENTNUM", "EVENTMSGTYPE"]].values]
+        Shot(x[0], x[1], x[2], x[3]) for x in pbp[pbp["EVENTMSGTYPE"].isin([1,2])][
+            ["GAME_ID", "PLAYER1_ID", "EVENTNUM", "EVENTMSGTYPE"]
+        ].values]
