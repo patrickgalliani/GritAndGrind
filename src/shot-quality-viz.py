@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     # Plot the shots as scatter plot and change color based on expected 
     # value of shot
-    plt.title("Shot Quality Map {}".format(sys.argv[3]))
+    plt.title("{}".format(sys.argv[3]))
     plt.scatter(
         Xs,
         Ys,
@@ -73,6 +73,6 @@ if __name__ == '__main__':
     ax.axes.get_yaxis().set_visible(False)
 
     draw_court(ax=ax)
-    # plt.xlim(0, 101)
-    # plt.ylim(-50, 0)
+    plt.xlim(0, 94)
+    plt.ylim(-50, 0)
     plt.show()
