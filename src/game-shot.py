@@ -168,12 +168,12 @@ if __name__ == '__main__':
         'result',
         'x',
         'y',
-        'closest_defender_distance',
-        'shot_distance',
-        'shot_type'
+        'PTS_TYPE',
+        'SHOT_DIST',
+        'CLOSE_DEF_DIST'
     ]) + "\n"
     report = shot_attributes
-    for event, sf in shot_features.items()[:50]:
+    for event, sf in shot_features.items():
         report += ("{},{},{},{},{},{},{},{},{}\n".format(
                 sf.game_id,
                 sf.player_id,
@@ -187,7 +187,11 @@ if __name__ == '__main__':
             )
         )
     logger.info("Shots\n\n{}".format(report))
-
+    
+    # Write out the data to an output file
+    with open(sys.argv[3], 'w') as f:
+        f.write(report)
+    
     # Create a map between player_id and name
     id_to_player = dict(
         [(x.player_id, x) for x in game.home_team.players] +
