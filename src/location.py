@@ -45,6 +45,10 @@ class MomentLocations:
         else:
             self.ball = None
         self.players = dict([
-            (location_matrix[x][1], Location(location_matrix[x]))
+            (location_matrix[x][1],
+             Location(location_matrix[x][2],
+                      location_matrix[x][3],
+                      location_matrix[x][4])
+             )
             for x in range(player_start, player_end)
         ])
