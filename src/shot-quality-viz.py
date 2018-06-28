@@ -7,6 +7,7 @@ from graphics import draw_court
 from utils import get_logger
 
 from sklearn.externals import joblib
+from sklearn.metrics import mean_squared_error
 
 import matplotlib
 matplotlib.use('TkAgg')
@@ -33,9 +34,10 @@ if __name__ == '__main__':
     shot_features = pd.read_csv(shot_feature_path)[[
         'x',
         'y',
+        'result',
         'CLOSE_DEF_DIST',
         'SHOT_DIST',
-        'PTS_TYPE'  
+        'PTS_TYPE',
     ]]
 
     # Read in the model
@@ -45,6 +47,18 @@ if __name__ == '__main__':
         'SHOT_DIST',
         'PTS_TYPE'  
     ]])]
+
+    # Compute the mean squared error of the predictions
+    results = (
+        shot_features.apply(lambda row: (
+            1 * row['PTS_TYPE'] if row['result'] == 1 else 0
+        ), axis=1)
+    )
+    mse = mean_squared_error(
+        results,
+        shot_predicted_vals
+    )
+    logger.info("Mean Squared Error: {}".format(mse))
 
     Xs = [sf['x'] for i, sf in shot_features.iterrows()]
     Ys = [-1.0 * sf['y'] for i, sf in shot_features.iterrows()]
