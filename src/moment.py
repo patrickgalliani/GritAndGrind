@@ -19,5 +19,5 @@ class Moment:
         self.seconds_left_quarter = moment_array[2]
         self.seconds_left_shot_clock = moment_array[3]
         location_matrix = moment_array[5]
-        self.event = int(event_id)
+        self.event_id = int(event_id)
         self.locations = MomentLocations(location_matrix)
