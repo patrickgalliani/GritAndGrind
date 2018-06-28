@@ -7,7 +7,7 @@ from location import Location
 import logging
 import math
 
-BALL_SHOOTER_THRESHOLD = 0.25
+BALL_SHOOTER_THRESHOLD = 1.5
 HOOP1 = Location(5.2, 25.0, 0.0)
 HOOP2 = Location(88.8, 25.0, 0.0)
 

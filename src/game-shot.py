@@ -159,7 +159,7 @@ if __name__ == '__main__':
 
     # Compute locations for all makes and all misses
     shot_features = get_shot_features_for_game(game, shots)
-
+    
     # Log the shot features to the console
     shot_attributes = ",".join([
         'game_id',
