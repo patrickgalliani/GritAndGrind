@@ -168,9 +168,9 @@ if __name__ == '__main__':
         'result',
         'x',
         'y',
-        'PTS_TYPE',
+        'CLOSE_DEF_DIST',
         'SHOT_DIST',
-        'CLOSE_DEF_DIST'
+        'PTS_TYPE'
     ]) + "\n"
     report = shot_attributes
     for event, sf in shot_features.items():

@@ -86,6 +86,10 @@ def load_shots(pbp_path, logger):
     ]]
     logger.info("Extracting shots from the play-by-play data...")
     return [
-        Shot(x[0], x[1], x[2], x[3]) for x in pbp[pbp["EVENTMSGTYPE"].isin([1,2])][
-            ["GAME_ID", "PLAYER1_ID", "EVENTNUM", "EVENTMSGTYPE"]
-        ].values]
+        Shot(x[0], x[1], x[2], x[3]) for x in 
+        pbp[pbp["EVENTMSGTYPE"].isin([1,2])][[
+            "GAME_ID",
+            "PLAYER1_ID",
+            "EVENTNUM",
+            "EVENTMSGTYPE"
+    ]].values]
